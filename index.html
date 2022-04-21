@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./style.css" />
+        <title>Typing Speed Test</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <h2><a id="logo" href="./index.html">Typing Speed Test</a></h2>
+                <ul class="controls">
+                    <li>
+                        <button class="refresh-btn">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="35"
+                                height="35"
+                                fill="currentColor"
+                                class="bi bi-arrow-clockwise"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"
+                                />
+                                <path
+                                    d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"
+                                />
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            <div class="search-form">
+                <input
+                    class="search-input"
+                    type="text"
+                    aria-label="What do you want to type fast?"
+                    placeholder="What do you want to type fast?"
+                    name="search"
+                    tabindex="1"
+                />
+                <button class="submit-btn" type="submit">Search</button>
+            </div>
+        </header>
+        <main>
+            <div class="loader-container">
+                <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/d/de/Wikipedia-logo_%28inverse%29.png"
+                    alt="Wikipedia Logo"
+                    width="100"
+                    class="wiki-image"
+                />
+            </div>
+            <div class="test-container">
+                <div class="content-container"></div>
+                <div class="stats-container">
+                    <div class="speed-stats">
+                        <h5>Speed</h5>
+                        <span id="wpm"></span><sup>wpm</sup>
+                    </div>
+                    <div class="accuracy-stats">
+                        <h5>Accuracy</h5>
+                        <span id="accuracy"></span>
+                    </div>
+                    <div class="timer-container-outer">
+                        <div class="timer-container-inner">
+                            <h5>Seconds</h5>
+                            <span id="timer"></span>
+                        </div>
+                        <svg
+                            class="timer-circle"
+                            width="130px"
+                            height="130px"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <defs>
+                                <linearGradient
+                                    id="GradientColor"
+                                    x1="0"
+                                    x2="0"
+                                    y1="0"
+                                    y2="1"
+                                >
+                                    <stop offset="0%" stop-color="#2b8eff" />
+                                    <stop
+                                        offset="100%"
+                                        stop-color="#2b8eff73"
+                                    />
+                                </linearGradient>
+                            </defs>
+                            <circle
+                                cx="65"
+                                cy="65"
+                                r="60"
+                                stroke-linecap="round"
+                            />
+                        </svg>
+                    </div>
+                    <div class="error-container">
+                        <span id="error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="results-popup">
+                    <h2>Your Results &#127881;</h2>
+                    <div class="speed-results">
+                        <h5>Speed</h5>
+                        <span id="wpm-result"></span><sup>wpm</sup>
+                    </div>
+                    <div class="accuracy-results">
+                        <h5>Accuracy</h5>
+                        <span id="accuracy-result"></span>
+                    </div>
+                    <button class="restart-btn">Try again</button>
+                </div>
+            </div>
+        </main>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="./app.js"></script>
+    </body>
+</html>
