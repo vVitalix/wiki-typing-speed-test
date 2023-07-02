@@ -1,0 +1,27 @@
+{
+    "name": "wiki-typing-speed-test",
+    "version": "1.0.0",
+    "description": "Touch typing speed test using the Wikipedia API",
+    "main": "app.js",
+    "scripts": {
+        "compile:sass": "sass --watch scss:assets/css"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/vVitalix/typing-speed-test.git"
+    },
+    "author": "vVitalix",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/vVitalix/typing-speed-test/issues"
+    },
+    "homepage": "https://github.com/vVitalix/typing-speed-test#readme",
+    "devDependencies": {
+        "sass": "^1.62.1"
+    },
+    "dependencies": {
+        "autoprefixer": "^10.4.14",
+        "postcss": "^8.4.23",
+        "postcss-cli": "^10.1.0"
+    }
+}

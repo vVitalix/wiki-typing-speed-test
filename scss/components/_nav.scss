@@ -1,0 +1,17 @@
+@use "../util" as *;
+
+.nav {
+    &__title {
+        color: transparent;
+        background-image: linear-gradient(
+            to right,
+            var(--light-blue),
+            var(--base-blue)
+        );
+        background-clip: text;
+
+        @include breakpoint(xlarge) {
+            font-size: var(--fs-md);
+        }
+    }
+}

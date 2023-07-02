@@ -1,0 +1,38 @@
+:root {
+    --transparent-base-black: #00000026;
+    --transparent-subtle-black: #0000000d;
+    --transparent-gray: #fafafab3;
+    --dark-gray-fg-text: #757575;
+    --base-gray: #888888;
+    --light-gray: #dddddd;
+    --light-gray-bg-body: #ececec;
+    --base-white: rgb(252, 252, 252);
+    --base-blue: #288cff;
+    --light-blue: #87bfff;
+    --transparent-base-blue: #2b8effeb;
+    --transparent-subtle-blue: #2b8eff73;
+    --dark-green-fg-valid: #0e630e;
+    --light-green-bg-valid: #e8fbd5;
+    --dark-pink-fg-typo: #ff597d;
+    --light-pink-bg-typo: #fbd5e4;
+    --dark-yellow: #e0cd5c;
+    --base-yellow: #ffef0b;
+    --base-red: #a10707;
+
+    --font-inconsolata: "Inconsolata", monospace;
+    --font-museoModerno: "MuseoModerno", cursive;
+    --font-sora: "Sora", sans-serif;
+
+    --fs-xs: 1.5rem;
+    --fs-sm: 2rem;
+    --fs-md: 2.5rem;
+    --fs-lg: 3rem;
+    --fs-xl: 3.5rem;
+    --fs-xxl: 4.5rem;
+    --fs-text-default: 4.5rem;
+
+    --border-radius: 24px;
+
+    --transition-slow: all 0.5s cubic-bezier(0.16, 0.61, 0.72, 1);
+    --transition-fast: all 0.2s cubic-bezier(0.65, 0.05, 0.35, 1);
+}

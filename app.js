@@ -1,13 +1,12 @@
 const loader = document.querySelector(".loader-container");
 const header = document.querySelector("header");
-const test = document.querySelector(".test-container");
+const testContainer = document.querySelector(".test-container");
 const contentContainer = document.querySelector(".content-container");
-const statsContainer = document.querySelector(".stats-container");
 const resultsContainer = document.querySelector(".results-container");
-const restartButton = document.querySelector(".restart-btn");
-const refreshButton = document.querySelector(".refresh-btn");
-const searchInput = document.querySelector(".search-input");
-const submitButton = document.querySelector(".submit-btn");
+const restartButton = document.querySelector(".controls__restart-btn");
+const tryAgainButton = document.querySelector(".try-again-btn");
+const searchInput = document.querySelector(".search-form__input");
+const submitButton = document.querySelector(".search-form__submit-btn");
 const errorSpan = document.querySelector("#error");
 const wpmSpan = document.querySelector("#wpm");
 const accuracySpan = document.querySelector("#accuracy");
@@ -70,7 +69,6 @@ const showError = error => {
 const setLoaderState = isVisible => {
     const displayState = isVisible ? "flex" : "none";
     loader.style.display = displayState;
-    statsContainer.style.display = isVisible ? "none" : "flex";
 };
 
 const indicateTypingProgress = (e, chars, charState) => {
@@ -181,7 +179,7 @@ const showTypingTestResults = text => {
     const pauseBanner = document.querySelector(".pause-banner");
     pauseBanner.style.visibility = "hidden";
     text.blur();
-    test.classList.add("blur");
+    testContainer.classList.add("blur");
     header.classList.add("blur");
     wpmResultSpan.textContent = wpmSpan.textContent;
     accuracyResultSpan.textContent = accuracySpan.textContent;
@@ -192,7 +190,7 @@ const restartTypingTest = e => {
     clearInterval(interval);
     clearForTestRestart();
     changeFormState(false);
-    test.classList.remove("blur");
+    testContainer.classList.remove("blur");
     header.classList.remove("blur");
     resultsContainer.style.display = "none";
 
@@ -427,7 +425,7 @@ const registerEventHandlers = () => {
     searchInput.addEventListener("keydown", handleKeyEvent);
     submitButton.addEventListener("click", getData);
     restartButton.addEventListener("click", restartTypingTest);
-    refreshButton.addEventListener("click", restartTypingTest);
+    tryAgainButton.addEventListener("click", restartTypingTest);
 };
 
 const introLoad = () => {

@@ -1,0 +1,33 @@
+@use "../util" as *;
+
+.controls {
+    @include flexBetween;
+
+    &__restart-btn {
+        @include flexCenter;
+        width: 5.4rem;
+        height: 4rem;
+        margin-right: 26px;
+        background-color: var(--base-white);
+        border: 2px solid var(--base-white);
+        border-radius: var(--border-radius);
+        transition: var(--transition-fast);
+
+        &:hover {
+            border-color: var(--light-blue);
+        }
+
+        &:focus {
+            outline: none;
+        }
+
+        &__icon {
+            stroke: var(--base-blue);
+            transition: var(--transition-fast);
+        }
+
+        &:active &__icon {
+            transform: rotate(-35deg);
+        }
+    }
+}

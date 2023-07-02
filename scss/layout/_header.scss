@@ -1,0 +1,39 @@
+@use "../util" as *;
+
+.header {
+    height: 9rem;
+    padding: 0 60px;
+    transition: var(--transition-fast);
+
+    @include breakpoint(large) {
+        height: 11rem;
+    }
+
+    @include breakpoint(medium) {
+        padding: 0 30px;
+    }
+
+    @include breakpoint(small) {
+        height: 16rem;
+        padding: 0 15px;
+    }
+
+    &__header-inner {
+        @include flexBetween;
+        width: 100%;
+        max-width: 180rem;
+        height: 100%;
+        margin-inline: auto;
+
+        @include breakpoint(large) {
+            flex-wrap: wrap;
+            align-content: space-between;
+            padding-top: 12px;
+        }
+
+        @include breakpoint(small) {
+            flex-wrap: nowrap;
+            flex-direction: column;
+        }
+    }
+}
