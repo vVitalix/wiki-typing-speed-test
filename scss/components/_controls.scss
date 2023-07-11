@@ -8,14 +8,7 @@
         width: 5.4rem;
         height: 4rem;
         margin-right: 26px;
-        background-color: var(--base-white);
-        border: 2px solid var(--base-white);
-        border-radius: var(--border-radius);
-        transition: var(--transition-fast);
-
-        &:hover {
-            border-color: var(--light-blue);
-        }
+        @include border;
 
         &:focus {
             outline: none;

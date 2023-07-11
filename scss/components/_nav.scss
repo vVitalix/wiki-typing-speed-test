@@ -2,6 +2,7 @@
 
 .nav {
     &__title {
+        text-align: center;
         color: transparent;
         background-image: linear-gradient(
             to right,
@@ -10,7 +11,7 @@
         );
         background-clip: text;
 
-        @include breakpoint(xlarge) {
+        @include breakpoint(large) {
             font-size: var(--fs-md);
         }
     }
