@@ -12,3 +12,31 @@ $breakpoints-down: (
         @content;
     }
 }
+
+@mixin paddingBreakpointsBody {
+    padding-inline: 60px;
+
+    @include breakpoint(medium) {
+        padding-inline: 30px;
+    }
+
+    @include breakpoint(small) {
+        padding-inline: 15px;
+    }
+}
+
+@mixin paddingBreakpointsTest {
+    padding-inline: 100px;
+
+    @include breakpoint(large) {
+        padding-inline: 60px;
+    }
+
+    @include breakpoint(medium) {
+        padding-inline: 30px;
+    }
+
+    @include breakpoint(small) {
+        padding-inline: 15px;
+    }
+}

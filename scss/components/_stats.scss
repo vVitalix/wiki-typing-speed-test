@@ -1,0 +1,108 @@
+@use "../util" as *;
+
+.stats {
+    @include flexBetween;
+    align-self: flex-end;
+    position: relative;
+    gap: 48px;
+    border-radius: var(--border-radius);
+    transition: var(--transition-fast);
+
+    @include breakpoint(large) {
+        gap: 0px;
+        background-color: var(--light-gray-bg-body);
+    }
+
+    @include breakpoint(small) {
+        align-self: stretch;
+        justify-content: space-evenly;
+    }
+
+    &__speed,
+    &__accuracy,
+    &__timer {
+        @include flexCenter;
+        @include testHeaderItem;
+        font-family: var(--font-museoModerno);
+        width: 11rem;
+
+        h5 {
+            position: absolute;
+            color: var(--light-blue);
+            transform: translateY(-150%);
+            transition: var(--transition-fast);
+
+            @include breakpoint(medium) {
+                transform: translateY(150%);
+            }
+        }
+
+        sup {
+            align-self: flex-start;
+        }
+    }
+
+    &__speed,
+    &__timer {
+        flex-shrink: 0;
+    }
+
+    &__accuracy {
+        @include breakpoint(small) {
+            min-width: 5.5rem;
+            padding-inline: 0;
+        }
+    }
+
+    &__timer-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        stroke-dasharray: 244;
+        transition: var(--transition-base);
+        z-index: 10;
+
+        .color-start {
+            stop-color: var(--base-blue);
+        }
+
+        .color-end {
+            stop-color: var(--light-blue);
+        }
+    }
+
+    &__curve-icon {
+        @include curveIcon;
+
+        &--left,
+        &--top-left {
+            top: 0;
+            left: 0;
+            transform: translateX(-50%);
+        }
+
+        &--right,
+        &--top-right {
+            top: 0;
+            right: 0;
+            transform: translateX(50%);
+        }
+
+        &--top-left {
+            @include breakpoint(medium) {
+                transform: translateX(50%);
+                visibility: hidden;
+            }
+        }
+
+        &--top-right {
+            transform: translateY(-50%);
+        }
+
+        &--bottom {
+            bottom: 0;
+            right: 0;
+            transform: translateY(50%);
+        }
+    }
+}

@@ -2,12 +2,12 @@
 
 .controls {
     @include flexBetween;
+    gap: 20px;
 
     &__restart-btn {
         @include flexCenter;
         width: 5.4rem;
         height: 4rem;
-        margin-right: 26px;
         @include border;
 
         &:focus {

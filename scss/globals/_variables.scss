@@ -2,19 +2,22 @@
     --transparent-base-black: #00000026;
     --transparent-subtle-black: #0000000d;
     --transparent-gray: #fafafab3;
-    --dark-gray-fg-text: #757575;
+    --dark-gray-fg-char: #757575;
     --base-gray: #888888;
     --light-gray: #dddddd;
     --light-gray-bg-body: #ececec;
     --base-white: rgb(252, 252, 252);
-    --base-blue: #288cff;
-    --light-blue: #87bfff;
+    --base-blue: #4099ff;
+    --light-blue: #a1cdff;
+    --light-gray-blue: #ddeeff;
     --transparent-base-blue: #2b8effeb;
     --transparent-subtle-blue: #2b8eff73;
     --dark-green-fg-valid: #0e630e;
     --light-green-bg-valid: #e8fbd5;
-    --dark-pink-fg-typo: #ff597d;
+    --dark-red-fg-typo: #a10707;
     --light-pink-bg-typo: #fbd5e4;
+    --base-white-fg-typo-visible: rgb(252, 252, 252);
+    --dark-pink-bg-typo-visible: #ff597d;
     --dark-yellow: #e0cd5c;
     --base-yellow: #ffef0b;
     --base-red: #a10707;
@@ -32,7 +35,12 @@
     --fs-text-default: 4.5rem;
 
     --border-radius: 24px;
+    --border-radius-word: 5px;
+    --border-radius-char: 4px;
+    --border-radius-char-current: 2px;
 
-    --transition-slow: all 0.5s cubic-bezier(0.16, 0.61, 0.72, 1);
+    --transition-base: all 0.35s ease-in-out;
+    --transition-slow: all 0.7s ease;
     --transition-fast: all 0.2s cubic-bezier(0.65, 0.05, 0.35, 1);
+    --transition-typo: background-color 0.35s ease-out;
 }

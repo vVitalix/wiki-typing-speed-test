@@ -1,0 +1,26 @@
+@use "../util" as *;
+
+.word-count {
+    @include flexCenter;
+    @include testHeaderItem;
+    font-family: var(--font-museoModerno);
+    font-size: var(--fs-xs);
+    height: 4.8rem;
+    gap: 4px;
+
+    &__curve-icon {
+        @include curveIcon;
+
+        &--bottom-left {
+            bottom: 0;
+            left: 0;
+            transform: translateX(-50%);
+        }
+
+        &--bottom-right {
+            bottom: 0;
+            right: 0;
+            transform: translateX(50%);
+        }
+    }
+}

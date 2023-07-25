@@ -4,17 +4,9 @@
     @include flexBetween;
     flex-direction: column;
     height: 16rem;
-    padding: 0 60px;
     transition: var(--transition-fast);
     position: relative;
-
-    @include breakpoint(medium) {
-        padding: 0 30px;
-    }
-
-    @include breakpoint(small) {
-        padding: 0 15px;
-    }
+    @include paddingBreakpointsBody;
 
     &__inner-top {
         @include flexBetween;

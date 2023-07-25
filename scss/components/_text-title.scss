@@ -1,0 +1,80 @@
+@use "../util" as *;
+
+.text-title {
+    @include flexCenter;
+    @include testHeaderItem;
+    align-self: flex-start;
+
+    @include breakpoint(medium) {
+        background-color: var(--light-gray-blue);
+    }
+
+    @include breakpoint(small) {
+        align-self: stretch;
+    }
+
+    &__title {
+        white-space: nowrap;
+
+        a {
+            transition: var(--transition-fast);
+
+            &:hover,
+            &:focus {
+                color: var(--light-blue);
+                outline: none;
+
+                &::before {
+                    left: 0;
+                    width: 100%;
+                }
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 0;
+                height: 2px;
+                background-color: var(--light-blue);
+                border-radius: var(--border-radius);
+                transition: var(--transition-base);
+            }
+        }
+    }
+
+    &__link-icon {
+        flex-shrink: 0;
+
+        path {
+            fill: var(--light-blue);
+        }
+    }
+
+    &__curve-icon {
+        @include curveIcon;
+
+        @include breakpoint(medium) {
+            fill: var(--light-gray-blue);
+            stroke: var(--light-gray-blue);
+        }
+
+        &--bottom {
+            bottom: 0;
+            left: 0;
+            transform: translateY(50%);
+        }
+
+        &--top {
+            top: 0;
+            right: 0;
+            transform: translateX(50%);
+
+            @include breakpoint(small) {
+                transform: translateX(-50%);
+                visibility: hidden;
+            }
+        }
+    }
+}

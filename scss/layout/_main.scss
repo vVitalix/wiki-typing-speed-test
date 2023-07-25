@@ -1,22 +1,20 @@
 @use "../util" as *;
 
 #main {
-    padding: 0 60px;
+    height: calc(100% - 16rem);
     transition: var(--transition-fast);
-
-    @include breakpoint(medium) {
-        padding: 0 30px;
-    }
-
-    @include breakpoint(small) {
-        padding: 0 15px;
-    }
+    @include paddingBreakpointsBody;
 
     .test-container {
-        @include flexBetween;
-        width: 100%;
-        max-width: 180rem;
+        @include flexCenter;
+        @include layout;
         height: 100%;
-        margin-inline: auto;
+    }
+
+    .loader-container {
+        display: none;
+    }
+    .results-container {
+        display: none;
     }
 }

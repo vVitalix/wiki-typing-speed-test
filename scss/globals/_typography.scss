@@ -11,3 +11,62 @@ h1 {
     font-size: var(--fs-lg);
     font-weight: 200;
 }
+
+h2 {
+    font-size: var(--fs-sm);
+    font-weight: 400;
+}
+
+h5 {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+}
+
+sup {
+    font-size: var(--fs-xs);
+}
+
+.word {
+    font-family: var(--font-inconsolata);
+    font-size: var(--fs-text-default);
+    font-weight: 400;
+    line-height: normal;
+    display: flex;
+    margin-bottom: 30px;
+    border-top: 2px solid var(--base-white);
+    border-radius: var(--border-radius-word);
+}
+
+.current-word {
+    border-color: var(--light-gray);
+}
+
+.char {
+    width: 22.5px;
+    height: 51px;
+    color: var(--dark-gray-fg-char);
+    border-radius: var(--border-radius-char);
+}
+
+.current-char {
+    border-radius: var(--border-radius-char-current);
+    border-bottom: 3px solid var(--base-blue);
+}
+
+.valid {
+    color: var(--dark-green-fg-valid);
+    background-color: var(--light-green-bg-valid);
+    outline: 1px solid var(--base-white);
+}
+
+.typo {
+    color: var(--dark-red-fg-typo);
+    background-color: var(--light-pink-bg-typo);
+    outline: 1px solid var(--base-white);
+    transition: var(--transition-typo);
+}
+
+.typo-visible {
+    color: var(--base-white-fg-typo-visible);
+    background-color: var(--dark-pink-bg-typo-visible);
+}

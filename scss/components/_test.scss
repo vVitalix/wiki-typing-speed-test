@@ -1,0 +1,31 @@
+@use "../util" as *;
+
+.test {
+    @include flexBetween;
+    flex-direction: column;
+    width: 100%;
+    max-width: 110rem;
+    height: 65rem;
+    background-color: var(--base-white);
+    border-radius: var(--border-radius);
+
+    &__header {
+        @include flexBetween;
+        align-self: stretch;
+        margin-bottom: 108px;
+
+        @include breakpoint(medium) {
+            flex-direction: column;
+            margin-bottom: 60px;
+        }
+    }
+
+    &__footer {
+        @include flexBetween;
+        flex-direction: column;
+        align-self: stretch;
+        min-height: 9.6rem;
+        transition: var(--transition-fast);
+        @include paddingBreakpointsTest;
+    }
+}

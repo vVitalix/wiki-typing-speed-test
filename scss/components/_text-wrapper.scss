@@ -1,0 +1,20 @@
+@use "../util" as *;
+
+.text-wrapper {
+    flex-grow: 1;
+    align-self: stretch;
+    transition: var(--transition-fast);
+    overflow: hidden;
+    @include paddingBreakpointsTest;
+
+    &:focus {
+        outline: none;
+    }
+
+    &__text {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        transition: var(--transition-slow);
+    }
+}

@@ -10,6 +10,12 @@
     justify-content: space-between;
 }
 
+@mixin layout {
+    width: 100%;
+    max-width: 180rem;
+    margin-inline: auto;
+}
+
 @mixin border {
     background-color: var(--base-white);
     border: 2px solid var(--base-white);
@@ -21,8 +27,17 @@
     }
 }
 
-@mixin layout {
-    width: 100%;
-    max-width: 180rem;
-    margin-inline: auto;
+@mixin testHeaderItem {
+    position: relative;
+    padding: 0.8rem 2rem;
+    background-color: var(--light-gray-bg-body);
+    border-radius: var(--border-radius);
+    transition: var(--transition-fast);
+}
+
+@mixin curveIcon {
+    position: absolute;
+    fill: var(--light-gray-bg-body);
+    stroke: var(--light-gray-bg-body);
+    transition: var(--transition-fast);
 }
