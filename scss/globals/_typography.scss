@@ -7,6 +7,13 @@ a:active {
     text-decoration: none;
 }
 
+button {
+    font-family: inherit;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    line-height: 1;
+}
+
 h1 {
     font-size: var(--fs-lg);
     font-weight: 200;
@@ -17,9 +24,24 @@ h2 {
     font-weight: 400;
 }
 
+h3 {
+    font-size: var(--fs-md);
+    font-weight: 600;
+    color: var(--base-blue);
+}
+
+h4 {
+    font-size: var(--fs-sm);
+}
+
 h5 {
     font-size: var(--fs-xs);
+}
+
+h4,
+h5 {
     font-weight: 500;
+    color: var(--light-blue);
 }
 
 sup {

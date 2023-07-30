@@ -9,7 +9,7 @@
     width: 15rem;
     height: 4.8rem;
     color: var(--base-white);
-    background-color: var(--transparent-base-blue);
+    background-color: var(--transparent-blue-banner);
     border-radius: var(--border-radius);
     pointer-events: none;
     transition: var(--transition-fast);
@@ -20,7 +20,7 @@
         content: "";
         position: absolute;
         margin-top: 5.5rem;
-        border-top: solid 10px var(--transparent-base-blue);
+        border-top: solid 10px var(--transparent-blue-banner);
         border-left: solid 10px transparent;
         border-right: solid 10px transparent;
     }

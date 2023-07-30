@@ -6,11 +6,12 @@
 
     &__restart-btn {
         @include flexCenter;
-        width: 5.4rem;
+        width: 5.5rem;
         height: 4rem;
         @include border;
 
         &:focus {
+            border-color: var(--light-blue);
             outline: none;
         }
 

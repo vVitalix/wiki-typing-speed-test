@@ -28,9 +28,9 @@
 
         h5 {
             position: absolute;
-            color: var(--light-blue);
-            transform: translateY(-150%);
             transition: var(--transition-fast);
+            transform: translateY(-150%);
+            z-index: 10;
 
             @include breakpoint(medium) {
                 transform: translateY(150%);

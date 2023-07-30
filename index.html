@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&family=MuseoModerno:wght@400;500;600&family=Sora:wght@200;400;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;600&family=MuseoModerno:wght@400;500;600&family=Sora:wght@200;400;600&display=swap"
             rel="stylesheet"
         />
 
@@ -435,18 +435,23 @@
                 </article>
             </div>
 
-            <div class="results-container">
-                <div class="results-popup">
-                    <h2>Your Results &#127881;</h2>
-                    <div class="speed-results">
-                        <h5>Speed</h5>
-                        <span id="speed-results"></span><sup>wpm</sup>
+            <div class="results-modal">
+                <div class="results-modal__overlay"></div>
+                <div class="results-modal__body">
+                    <h3>Your Results &#127881;</h3>
+                    <div class="results-modal__stats">
+                        <div class="results-modal__speed">
+                            <h4>Speed</h4>
+                            <span id="speed-result"></span><sup>wpm</sup>
+                        </div>
+                        <div class="results-modal__accuracy">
+                            <h4>Accuracy</h4>
+                            <span id="accuracy-result"></span>
+                        </div>
                     </div>
-                    <div class="accuracy-results">
-                        <h5>Accuracy</h5>
-                        <span id="accuracy-results"></span>
-                    </div>
-                    <button class="try-again-btn">Try again</button>
+                    <button class="results-modal__try-again-btn">
+                        Try again
+                    </button>
                 </div>
             </div>
         </main>

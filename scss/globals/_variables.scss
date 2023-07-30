@@ -1,17 +1,15 @@
 :root {
-    --transparent-base-black: #00000026;
-    --transparent-subtle-black: #0000000d;
-    --transparent-gray: #fafafab3;
     --dark-gray-fg-char: #757575;
+    --light-gray-bg-body: #ececec;
     --base-gray: #888888;
     --light-gray: #dddddd;
-    --light-gray-bg-body: #ececec;
     --base-white: rgb(252, 252, 252);
     --base-blue: #4099ff;
-    --light-blue: #a1cdff;
+    --light-blue: #8ac1ff;
     --light-gray-blue: #ddeeff;
-    --transparent-base-blue: #2b8effeb;
-    --transparent-subtle-blue: #2b8eff73;
+    --light-gray-blue-shadow: rgb(80, 95, 110);
+    --transparent-blue-banner: rgba(40, 140, 255, 0.8);
+    --transparent-blue-overlay: rgba(0, 28, 58, 0.5);
     --dark-green-fg-valid: #0e630e;
     --light-green-bg-valid: #e8fbd5;
     --dark-red-fg-typo: #a10707;
