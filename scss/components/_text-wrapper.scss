@@ -1,6 +1,7 @@
 @use "../util" as *;
 
 .text-wrapper {
+    display: none;
     flex-grow: 1;
     align-self: stretch;
     transition: var(--transition-fast);

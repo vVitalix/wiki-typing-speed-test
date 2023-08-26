@@ -1,19 +1,21 @@
-const loader = document.querySelector(".loader-container");
-const header = document.querySelector("header");
-const testContainer = document.querySelector(".test-container");
-const contentContainer = document.querySelector(".content-container");
-const resultsContainer = document.querySelector(".results-container");
-const restartButton = document.querySelector(".controls__restart-btn");
-const tryAgainButton = document.querySelector(".try-again-btn");
+const loader = document.querySelector(".loader");
+const textWrapper = document.querySelector(".text-wrapper");
+const text = document.querySelector(".text-wrapper__text");
+const title = document.querySelector(".text-title__title");
+const pauseBanner = document.querySelector(".pause-banner");
+const progressBar = document.querySelector(".progress-bar__bar");
+const wordCount = document.querySelector(".word-count__num");
 const searchInput = document.querySelector(".search-form__input");
 const submitButton = document.querySelector(".search-form__submit-btn");
-const errorSpan = document.querySelector("#error");
-const wpmSpan = document.querySelector("#wpm");
-const accuracySpan = document.querySelector("#accuracy");
-const wpmResultSpan = document.querySelector("#wpm-result");
-const accuracyResultSpan = document.querySelector("#accuracy-result");
-const timerSpan = document.querySelector("#timer");
-const timerCircle = document.querySelector(".timer-circle");
+const restartButton = document.querySelector(".controls__restart-btn");
+const resultsModal = document.querySelector(".results-modal");
+const tryAgainButton = document.querySelector(".results-modal__try-again-btn");
+const speed = document.querySelector("#speed");
+const accuracy = document.querySelector("#accuracy");
+const speedResult = document.querySelector("#speed-result");
+const accuracyResult = document.querySelector("#accuracy-result");
+const timer = document.querySelector("#timer");
+const timerIcon = document.querySelector(".stats__timer-icon");
 
 const endpoint = "https://en.wikipedia.org/w/api.php?";
 const params = {
@@ -28,22 +30,19 @@ const params = {
     gsrlimit: 1,
 };
 
-let rawText = "";
+let rawText;
 let index;
 let typos;
 let time;
 let interval;
 
-const changeFormState = isDisabled => {
-    searchInput.disabled = isDisabled;
-    submitButton.disabled = isDisabled;
-};
-
-const clearForTestRestart = () => {
-    wpmSpan.textContent = "...";
-    accuracySpan.textContent = "...%";
-    timerSpan.textContent = 60;
-    timerCircle.style.strokeDashoffset = 0;
+const resetStats = () => {
+    speed.textContent = "...";
+    accuracy.textContent = "...%";
+    speedResult.textContent = speed.textContent;
+    accuracyResult.textContent = accuracy.textContent;
+    timer.textContent = 60;
+    timerIcon.style.strokeDashoffset = 0;
     index = 0;
     typos = 0;
     time = 60;
@@ -51,10 +50,12 @@ const clearForTestRestart = () => {
 };
 
 const clearPreviousResults = () => {
-    contentContainer.innerHTML = "";
-    errorSpan.innerHTML = "";
     searchInput.value = "";
-    clearForTestRestart();
+    title.innerHTML = "";
+    text.innerHTML = "";
+    wordCount.innerHTML = "";
+    rawText = "";
+    resetStats();
 };
 
 const isInputEmpty = input => {
@@ -63,12 +64,20 @@ const isInputEmpty = input => {
 };
 
 const showError = error => {
-    errorSpan.innerHTML = `${error}`;
+    console.log(error);
 };
 
-const setLoaderState = isVisible => {
-    const displayState = isVisible ? "flex" : "none";
-    loader.style.display = displayState;
+const setLoaderState = isLoading => {
+    loader.style.display = isLoading ? "flex" : "none";
+    textWrapper.style.display = isLoading ? "none" : "block";
+
+    changeFormState(isLoading);
+    handlePauseBanner();
+};
+
+const changeFormState = isDisabled => {
+    searchInput.disabled = isDisabled;
+    submitButton.disabled = isDisabled;
 };
 
 const indicateTypingProgress = (e, chars, charState) => {
@@ -91,12 +100,12 @@ const updateAccuracy = (numberOfTypedChars, charState) => {
         typos--;
     }
 
-    accuracySpan.textContent = `${Math.floor(
+    accuracy.textContent = `${Math.floor(
         100 - (typos / numberOfTypedChars) * 100
     )}%`;
 
     if (numberOfTypedChars === 0) {
-        accuracySpan.textContent = "...%";
+        accuracy.textContent = "...%";
     }
 };
 
@@ -110,45 +119,48 @@ const showTypo = (e, chars) => {
     }, 250);
 };
 
-const moveTextByProgress = text => {
-    const textWrapper = text.querySelector(".text-wrapper");
+const moveTextByProgress = () => {
     const currentWord = text.querySelector(".current-word");
     if (!currentWord) return;
     const currentWordHeight = currentWord.getBoundingClientRect().height;
+    const currentWordMarginBottom = parseInt(
+        getComputedStyle(currentWord).getPropertyValue("margin-bottom")
+    );
     const currentWordPosition = currentWord.offsetTop;
 
-    textWrapper.style.top =
-        currentWordPosition > currentWordHeight * 5
-            ? `${currentWordHeight * 5 - currentWordPosition}px`
+    text.style.top =
+        (currentWordHeight + currentWordMarginBottom) * 2 < currentWordPosition
+            ? `${
+                  (currentWordHeight + currentWordMarginBottom) * 2 -
+                  currentWordPosition
+              }px`
             : "0px";
+
+    handlePauseBanner();
 };
 
-const updateProgressBar = (text, words) => {
-    const progressBar = text.querySelector(".progress-bar");
+const updateProgressBar = words => {
+    const currentWord = text.querySelector(".current-word");
+    const indexOfCurrentWord = [].indexOf.call(words, currentWord);
+
+    progressBar.style.width =
+        indexOfCurrentWord === -1
+            ? "100%"
+            : `${Math.floor((indexOfCurrentWord / words.length) * 100)}%`;
+};
+
+const calculateSpeed = words => {
     const currentWord = text.querySelector(".current-word");
     const indexCurrentWord = [].indexOf.call(words, currentWord);
 
     if (indexCurrentWord === -1) {
-        progressBar.style.width = "100%";
+        speed.textContent = Math.floor(60 / ((60 - time) / words.length));
     } else {
-        progressBar.style.width = `${Math.floor(
-            (indexCurrentWord / words.length) * 100
-        )}%`;
+        speed.textContent = Math.floor(60 / ((60 - time) / indexCurrentWord));
     }
 };
 
-const calculateSpeed = (text, words) => {
-    const currentWord = text.querySelector(".current-word");
-    const indexCurrentWord = [].indexOf.call(words, currentWord);
-
-    if (indexCurrentWord === -1) {
-        wpmSpan.textContent = Math.floor(60 / ((60 - time) / words.length));
-    } else {
-        wpmSpan.textContent = Math.floor(60 / ((60 - time) / indexCurrentWord));
-    }
-};
-
-const startTimer = (text, words, chars, handleTyping) => {
+const startTimer = (words, chars) => {
     if (
         (index === 0 && !chars[1].classList.contains("current-char")) ||
         interval !== null
@@ -159,45 +171,38 @@ const startTimer = (text, words, chars, handleTyping) => {
 
     interval = setInterval(() => {
         time--;
-        timerSpan.textContent = time.toString().padStart(2, "0");
-        timerCircle.style.strokeDashoffset = 377 - (377 / 60) * time;
-        calculateSpeed(text, words);
+        timer.textContent = time.toString().padStart(2, "0");
+        timerIcon.style.strokeDashoffset = 244 - (244 / 60) * time;
+        calculateSpeed(words);
 
         if (time === 0) {
-            stopTimer(text, handleTyping);
+            stopTimer();
         }
     }, 1000);
 };
 
-const stopTimer = (text, handleTyping) => {
-    text.removeEventListener("keydown", handleTyping);
+const stopTimer = () => {
+    textWrapper.removeEventListener("keydown", handleTyping);
     clearInterval(interval);
-    showTypingTestResults(text);
+    showTypingTestResults();
 };
 
-const showTypingTestResults = text => {
-    const pauseBanner = document.querySelector(".pause-banner");
-    pauseBanner.style.visibility = "hidden";
-    text.blur();
-    testContainer.classList.add("blur");
-    header.classList.add("blur");
-    wpmResultSpan.textContent = wpmSpan.textContent;
-    accuracyResultSpan.textContent = accuracySpan.textContent;
-    resultsContainer.style.display = "flex";
+const showTypingTestResults = () => {
+    textWrapper.blur();
+    handlePauseBanner();
+    speedResult.textContent = speed.textContent;
+    accuracyResult.textContent = accuracy.textContent;
+    resultsModal.classList.add("show");
 };
 
-const restartTypingTest = e => {
+const restartTypingTest = () => {
     clearInterval(interval);
-    clearForTestRestart();
+    resetStats();
     changeFormState(false);
-    testContainer.classList.remove("blur");
-    header.classList.remove("blur");
-    resultsContainer.style.display = "none";
+    resultsModal.classList.remove("show");
 
-    const text = document.querySelector(".text");
     const words = text.querySelectorAll(".word");
     const chars = text.querySelectorAll(".char");
-    const pauseBanner = document.querySelector(".pause-banner");
 
     words.forEach(word => {
         word.classList.remove("current-word");
@@ -208,104 +213,101 @@ const restartTypingTest = e => {
 
     words[0].classList.add("current-word");
     chars[index].classList.add("current-char");
-    pauseBanner.style.visibility = "visible";
 
-    moveTextByProgress(text);
-    updateProgressBar(text, words);
-    text.focus();
-    if (!e.target.classList.contains("restart-btn")) return;
-    typing(text, words, chars);
+    moveTextByProgress();
+    updateProgressBar(words);
+    textWrapper.addEventListener("keydown", handleTyping);
+    textWrapper.focus();
 };
 
-const typing = (text, words, chars) => {
-    text.addEventListener("keydown", function handleTyping(e) {
-        if (
-            (e.shiftKey && e.key === chars[index].textContent) ||
-            e.key === chars[index].textContent
-        ) {
-            indicateTypingProgress(e, chars, "valid");
-            updateAccuracy(index, "valid");
-        } else if (
-            e.key !== "Alt" &&
-            e.key !== "Shift" &&
-            e.key !== "Control" &&
-            e.key !== "CapsLock" &&
-            e.key !== "Backspace" &&
-            e.key !== chars[index].textContent
-        ) {
-            showTypo(e, chars);
-            indicateTypingProgress(e, chars, "typo");
-            updateAccuracy(index, "typo");
-        } else if (e.key === "Backspace" && index !== 0) {
-            const previousCharStateIsTypo =
-                chars[index - 1].classList.contains("typo");
-            updateAccuracy(index - 1, previousCharStateIsTypo);
-            chars[index - 1].textContent = rawText[index - 1];
-            chars[index].classList.remove("current-char");
-            chars[index - 1].classList.remove("typo", "valid");
-            chars[index - 1].classList.add("current-char");
-            chars[index - 1].parentElement.classList.add("current-word");
-            chars[index - 1].parentElement.nextSibling?.classList.remove(
-                "current-word"
-            );
-            index--;
-        }
+const handleTyping = e => {
+    const words = text.querySelectorAll(".word");
+    const chars = text.querySelectorAll(".char");
 
-        startTimer(text, words, chars, handleTyping);
+    if (
+        (e.shiftKey && e.key === chars[index].textContent) ||
+        e.key === chars[index].textContent
+    ) {
+        indicateTypingProgress(e, chars, "valid");
+        updateAccuracy(index, "valid");
+    } else if (
+        e.key !== "Alt" &&
+        e.key !== "Tab" &&
+        e.key !== "Shift" &&
+        e.key !== "Control" &&
+        e.key !== "CapsLock" &&
+        e.key !== "Backspace" &&
+        e.key !== chars[index].textContent
+    ) {
+        showTypo(e, chars);
+        indicateTypingProgress(e, chars, "typo");
+        updateAccuracy(index, "typo");
+    } else if (e.key === "Backspace" && index !== 0) {
+        const previousCharStateIsTypo =
+            chars[index - 1].classList.contains("typo");
+        updateAccuracy(index - 1, previousCharStateIsTypo);
+        chars[index - 1].textContent = rawText[index - 1];
+        chars[index].classList.remove("current-char");
+        chars[index - 1].classList.remove("typo", "valid");
+        chars[index - 1].classList.add("current-char");
+        chars[index - 1].parentElement.classList.add("current-word");
+        chars[index - 1].parentElement.nextSibling?.classList.remove(
+            "current-word"
+        );
+        index--;
+    }
 
-        if (index === chars.length) {
-            chars[index - 1].parentElement.classList.remove("current-word");
-            calculateSpeed(text, words);
-            stopTimer(text, handleTyping);
-        }
+    startTimer(words, chars);
 
-        moveTextByProgress(text);
-        updateProgressBar(text, words);
-    });
+    if (index === chars.length) {
+        chars[index - 1].parentElement.classList.remove("current-word");
+        calculateSpeed(words);
+        stopTimer();
+    }
+
+    moveTextByProgress();
+    updateProgressBar(words);
 };
 
-const setPauseBannerPosition = (pauseBanner, pauseBannerWidth, text) => {
+const handlePauseBanner = () => {
     const currentChar = text.querySelector(".current-char");
-    if (!currentChar) return (pauseBanner.style.display = "none");
+
+    if (
+        !currentChar ||
+        document.activeElement.className === "text-wrapper" ||
+        time === 0
+    ) {
+        pauseBanner.style.display = "none";
+        pauseBanner.classList.remove("bounce");
+        return;
+    }
+
     const currentCharTop = currentChar.getBoundingClientRect().top;
     const currentCharLeft = currentChar.getBoundingClientRect().left;
     const currentCharWidth = currentChar.getBoundingClientRect().width;
-    const textTop = text.getBoundingClientRect().top;
-    pauseBanner.style.top = `${currentCharTop - textTop - 2}px`;
-    pauseBanner.style.left = `${
-        currentCharLeft - pauseBannerWidth / 2 + currentCharWidth / 2
-    }px`;
+    const pauseBannerWidth = parseInt(
+        getComputedStyle(pauseBanner).getPropertyValue("width")
+    );
+    const pauseBannerHeight = parseInt(
+        getComputedStyle(pauseBanner).getPropertyValue("height")
+    );
+
+    if (currentCharLeft > 60) {
+        pauseBanner.style.left = `${
+            currentCharLeft + currentCharWidth / 2 - pauseBannerWidth / 2
+        }px`;
+        pauseBanner.classList.remove("offset");
+    } else {
+        pauseBanner.style.left = `${currentCharLeft + currentCharWidth / 2}px`;
+        pauseBanner.classList.add("offset");
+    }
+
+    pauseBanner.style.top = `${currentCharTop - pauseBannerHeight - 10}px`;
     pauseBanner.style.display = "flex";
 };
 
-const controlPauseBanner = (pauseBanner, text) => {
-    const pauseBannerWidth = pauseBanner.getBoundingClientRect().width;
-    setPauseBannerPosition(pauseBanner, pauseBannerWidth, text);
-
-    pauseBanner.addEventListener("animationend", () => {
-        pauseBanner.classList.add("pause-banner-bounce");
-    });
-    // Code for Chrome, Safari and Opera
-    pauseBanner.addEventListener("webkitAnimationEnd", () => {
-        pauseBanner.classList.add("pause-banner-bounce");
-    });
-
-    text.addEventListener("focus", () => {
-        pauseBanner.style.display = "none";
-    });
-    text.addEventListener("blur", () => {
-        setPauseBannerPosition(pauseBanner, pauseBannerWidth, text);
-    });
-    window.addEventListener("resize", () => {
-        moveTextByProgress(text);
-        if (document.activeElement.className === "text") return;
-        setPauseBannerPosition(pauseBanner, pauseBannerWidth, text);
-        const textWrapper = text.querySelector(".text-wrapper");
-        textWrapper.addEventListener("transitionend", () => {
-            if (document.activeElement.className === "text") return;
-            setPauseBannerPosition(pauseBanner, pauseBannerWidth, text);
-        });
-    });
+const bouncePauseBanner = () => {
+    pauseBanner.classList.add("bounce");
 };
 
 const filterTextCharacters = text => {
@@ -318,69 +320,53 @@ const filterTextCharacters = text => {
 
     const processedText = rawText
         .split(" ")
-        .map(
-            word =>
-                `<span class="word">${
-                    word
-                        .split("")
-                        .map(
-                            character =>
-                                `<span class="char">${character}</span>`
-                        )
-                        .join("") + `<span class="char"> </span>`
-                }</span>`
-        )
+        .map((word, i, arr) => {
+            if (i === arr.length - 1)
+                return `<span class="word">${word
+                    .split("")
+                    .map(character => `<span class="char">${character}</span>`)
+                    .join("")}</span>`;
+
+            return `<span class="word">${
+                word
+                    .split("")
+                    .map(character => `<span class="char">${character}</span>`)
+                    .join("") + `<span class="char">${" "}</span>`
+            }</span>`;
+        })
         .join("");
 
     return processedText;
 };
 
+const formatTitle = title => {
+    const titleString =
+        title.length > 20 ? `${title.substring(0, 20)}...` : title;
+    return titleString;
+};
+
 const showResults = results => {
     results.forEach(result => {
-        contentContainer.innerHTML += `
-        <div class="text-container">
-            <a href="https://en.wikipedia.org/?curid=${result.pageId}"
-                target="_blank" class="text-title">
-                <h2>${result.title} &#187;</h2>
-            </a>
-            <div tabindex="2" class="text">
-              <div class="top-box"></div>
-              <div class="text-wrapper">${filterTextCharacters(
-                  result.text
-              )}</div>
-              <div class="bottom-box">
-                <div class="progress-bar-container">
-                  <div class="progress-bar"></div>
-                </div>
-              </div>
-            </div>
-            <div class="pause-banner">
-              <span>Click and start typing</span>
-            </div>
-        </div>
-    `;
+        title.innerHTML = ` <a 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                aria-label="Learn more on the Wikipedia page" 
+                                href="https://en.wikipedia.org/?curid=${
+                                    result.pageId
+                                }"
+                                title="${result.title}"
+                            >
+                                ${formatTitle(result.title)}
+                            </a>
+                                `;
+        text.innerHTML = `${filterTextCharacters(result.text)}`;
 
-        const text = document.querySelector(".text");
         const words = text.querySelectorAll(".word");
         const chars = text.querySelectorAll(".char");
-        const pauseBanner = document.querySelector(".pause-banner");
 
         words[0].classList.add("current-word");
         chars[index].classList.add("current-char");
-
-        if (words.length >= 60) {
-            errorSpan.style.color = "#2b8eff73";
-            showError(`This text contains ${words.length} words.`);
-        } else if (words.length < 60) {
-            errorSpan.style.color = "#ff597d";
-            showError(
-                "This text is too short. Maybe try to find another topic."
-            );
-        }
-
-        controlPauseBanner(pauseBanner, text);
-        text.focus();
-        typing(text, words, chars);
+        wordCount.innerHTML = words.length;
     });
 };
 
@@ -394,12 +380,11 @@ const gatherData = pages => {
 };
 
 const getData = async () => {
-    const userInput = searchInput.value;
+    const userInput = searchInput.value.trim();
     if (isInputEmpty(userInput)) return;
 
     params.gsrsearch = userInput;
     clearPreviousResults();
-    changeFormState(true);
     setLoaderState(true);
 
     try {
@@ -410,8 +395,8 @@ const getData = async () => {
     } catch (error) {
         showError(error);
     } finally {
-        changeFormState(false);
         setLoaderState(false);
+        searchInput.focus();
     }
 };
 
@@ -424,6 +409,13 @@ const handleKeyEvent = e => {
 const registerEventHandlers = () => {
     searchInput.addEventListener("keydown", handleKeyEvent);
     submitButton.addEventListener("click", getData);
+    textWrapper.addEventListener("keydown", handleTyping);
+    textWrapper.addEventListener("focus", handlePauseBanner);
+    textWrapper.addEventListener("blur", handlePauseBanner);
+    textWrapper.addEventListener("transitionend", moveTextByProgress);
+    text.addEventListener("transitionend", handlePauseBanner);
+    window.addEventListener("resize", moveTextByProgress);
+    pauseBanner.addEventListener("animationend", bouncePauseBanner);
     restartButton.addEventListener("click", restartTypingTest);
     tryAgainButton.addEventListener("click", restartTypingTest);
 };

@@ -1,0 +1,25 @@
+@use "../util" as *;
+
+.loader {
+    @include flexCenter;
+    flex-grow: 1;
+    align-self: stretch;
+    transition: var(--transition-fast);
+    @include paddingBreakpointsTest;
+
+    &__icon {
+        width: 100%;
+        max-width: 10rem;
+        animation: loading 2s ease-in-out infinite;
+    }
+}
+
+@keyframes loading {
+    0%,
+    100% {
+        transform: scale(0.7);
+    }
+    50% {
+        transform: scale(1);
+    }
+}

@@ -25,6 +25,11 @@
     &:hover {
         border-color: var(--light-blue);
     }
+
+    &:focus {
+        border-color: var(--base-blue);
+        outline: none;
+    }
 }
 
 @mixin testHeaderItem {
