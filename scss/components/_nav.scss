@@ -3,16 +3,20 @@
 .nav {
     &__title {
         text-align: center;
-        color: transparent;
-        background-image: linear-gradient(
-            to right,
-            var(--light-blue),
-            var(--base-blue)
-        );
-        background-clip: text;
+        transition: font-size var(--easing-position);
 
         @include breakpoint(large) {
             font-size: var(--fs-md);
         }
+    }
+
+    &__link {
+        color: transparent;
+        background-image: linear-gradient(
+            to right,
+            var(--accent-blue),
+            var(--base-blue)
+        );
+        background-clip: text;
     }
 }

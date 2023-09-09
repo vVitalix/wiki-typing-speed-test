@@ -16,7 +16,7 @@ button {
 
 h1 {
     font-size: var(--fs-lg);
-    font-weight: 200;
+    font-weight: 400;
 }
 
 h2 {
@@ -41,7 +41,7 @@ h5 {
 h4,
 h5 {
     font-weight: 500;
-    color: var(--light-blue);
+    color: var(--accent-blue);
 }
 
 sup {
@@ -49,24 +49,19 @@ sup {
 }
 
 .word {
-    font-family: var(--font-inconsolata);
-    font-size: var(--fs-text-default);
-    font-weight: 400;
-    line-height: normal;
     display: flex;
     margin-bottom: 30px;
-    border-top: 2px solid var(--base-white);
+    border-top: 2px solid transparent;
     border-radius: var(--border-radius-word);
 }
 
 .current-word {
-    border-color: var(--light-gray);
+    border-top-color: var(--current-word-border);
 }
 
 .char {
     width: 22.5px;
     height: 51px;
-    color: var(--dark-gray-fg-char);
     border-radius: var(--border-radius-char);
 }
 
@@ -76,19 +71,19 @@ sup {
 }
 
 .valid {
-    color: var(--dark-green-fg-valid);
-    background-color: var(--light-green-bg-valid);
-    outline: 1px solid var(--base-white);
+    color: var(--valid-fg);
+    background-color: var(--valid-bg);
+    outline: 1px solid var(--test-bg);
 }
 
 .typo {
-    color: var(--dark-red-fg-typo);
-    background-color: var(--light-pink-bg-typo);
-    outline: 1px solid var(--base-white);
+    color: var(--typo-fg);
+    background-color: var(--typo-bg);
+    outline: 1px solid var(--test-bg);
     transition: var(--transition-typo);
 }
 
 .typo-visible {
-    color: var(--base-white-fg-typo-visible);
-    background-color: var(--dark-pink-bg-typo-visible);
+    color: var(--typo-visible-fg);
+    background-color: var(--typo-visible-bg);
 }

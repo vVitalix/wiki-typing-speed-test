@@ -1,13 +1,15 @@
 .progress-bar {
     width: 100%;
-    background-color: var(--light-gray-bg-body);
+    background-color: var(--body-bg);
     border-radius: var(--border-radius);
+    transition: background-color var(--easing-color);
 
     &__bar {
         width: 0%;
         height: 3px;
-        background-color: var(--light-blue);
+        background-color: var(--accent-blue);
         border-radius: var(--border-radius);
-        transition: var(--transition-slow);
+        transition: width var(--easing-slow),
+            background-color var(--easing-color);
     }
 }

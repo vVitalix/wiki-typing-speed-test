@@ -6,8 +6,9 @@
     width: 100%;
     max-width: 110rem;
     height: 65rem;
-    background-color: var(--base-white);
+    background-color: var(--test-bg);
     border-radius: var(--border-radius);
+    transition: background-color var(--easing-color);
 
     &__header {
         @include flexBetween;
@@ -25,7 +26,7 @@
         flex-direction: column;
         align-self: stretch;
         min-height: 9.6rem;
-        transition: var(--transition-fast);
+        transition: padding var(--easing-position);
         @include paddingBreakpointsTest;
     }
 }

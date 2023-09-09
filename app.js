@@ -428,3 +428,53 @@ const introLoad = () => {
 registerEventHandlers();
 
 introLoad();
+
+/* THEME TOGGLE */
+
+const darkButton = document.getElementById("dark");
+const lightButton = document.getElementById("light");
+
+const setDarkTheme = () => {
+    document.querySelector("body").classList = "dark-theme";
+    localStorage.setItem("theme", "dark");
+};
+
+const setLightTheme = () => {
+    document.querySelector("body").classList = "light-theme";
+    localStorage.setItem("theme", "light");
+};
+
+const themeFromLocalStorage = () => {
+    return localStorage.getItem("theme");
+};
+
+const themeFromPreferences = () => {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light"; // If preference is set or does not match anything (light is default)
+};
+
+const loadAndUpdateTheme = () => {
+    // local storage has precendence over the prefers-color-scheme
+    const theme = themeFromLocalStorage() || themeFromPreferences();
+    theme == "dark" ? darkButton.click() : lightButton.click();
+};
+
+// when the inputs are clicked, check which radio button is checked and change the theme
+const radioButtons = document.querySelectorAll(".theme-toggle__wrapper input");
+radioButtons.forEach(button => {
+    button.addEventListener("click", e => {
+        darkButton.checked ? setDarkTheme() : setLightTheme();
+    });
+});
+
+// when the prefers-color-scheme changes, this event will be emitted
+// event reflects the media query, if it matches, the new theme is dark, else it is light
+window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", e => {
+        e.matches ? darkButton.click() : lightButton.click();
+    });
+
+// Load the right theme on startup - localStorage has precedence
+loadAndUpdateTheme();

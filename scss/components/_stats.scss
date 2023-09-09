@@ -4,13 +4,15 @@
     @include flexBetween;
     align-self: flex-end;
     position: relative;
-    gap: 48px;
+    column-gap: 48px;
+    background-color: transparent;
     border-radius: var(--border-radius);
-    transition: var(--transition-fast);
+    transition: column-gap var(--easing-position),
+        background-color var(--easing-color);
 
     @include breakpoint(large) {
-        gap: 0px;
-        background-color: var(--light-gray-bg-body);
+        column-gap: 0px;
+        background-color: var(--body-bg);
     }
 
     @include breakpoint(small) {
@@ -28,8 +30,9 @@
 
         h5 {
             position: absolute;
-            transition: var(--transition-fast);
             transform: translateY(-150%);
+            transition: transform var(--easing-position),
+                color var(--easing-color);
             z-index: 10;
 
             @include breakpoint(medium) {
@@ -59,15 +62,17 @@
         top: 0;
         left: 0;
         stroke-dasharray: 244;
-        transition: var(--transition-base);
+        transition: stroke-dashoffset var(--easing-base);
         z-index: 10;
 
         .color-start {
             stop-color: var(--base-blue);
+            transition: var(--transition-svg);
         }
 
         .color-end {
-            stop-color: var(--light-blue);
+            stop-color: var(--accent-blue);
+            transition: var(--transition-svg);
         }
     }
 
@@ -86,6 +91,13 @@
             top: 0;
             right: 0;
             transform: translateX(50%);
+        }
+
+        &--left,
+        &--right {
+            @include breakpoint(large) {
+                visibility: hidden;
+            }
         }
 
         &--top-left {

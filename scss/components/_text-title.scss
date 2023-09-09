@@ -6,7 +6,7 @@
     align-self: flex-start;
 
     @include breakpoint(medium) {
-        background-color: var(--light-gray-blue);
+        background-color: var(--accent-gray-blue);
     }
 
     @include breakpoint(small) {
@@ -17,11 +17,11 @@
         white-space: nowrap;
 
         a {
-            transition: var(--transition-fast);
+            transition: color var(--easing-color-fast);
 
             &:hover,
             &:focus {
-                color: var(--light-blue);
+                color: var(--accent-blue);
                 outline: none;
 
                 &::before {
@@ -37,9 +37,10 @@
                 right: 0;
                 width: 0;
                 height: 2px;
-                background-color: var(--light-blue);
+                background-color: var(--accent-blue);
                 border-radius: var(--border-radius);
-                transition: var(--transition-base);
+                transition: width var(--easing-base),
+                    background-color var(--easing-color);
             }
         }
     }
@@ -48,7 +49,8 @@
         flex-shrink: 0;
 
         path {
-            fill: var(--light-blue);
+            fill: var(--accent-blue);
+            transition: var(--transition-svg);
         }
     }
 
@@ -56,8 +58,8 @@
         @include curveIcon;
 
         @include breakpoint(medium) {
-            fill: var(--light-gray-blue);
-            stroke: var(--light-gray-blue);
+            stroke: var(--accent-gray-blue);
+            fill: var(--accent-gray-blue);
         }
 
         &--bottom {

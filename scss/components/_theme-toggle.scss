@@ -1,6 +1,6 @@
 @use "../util" as *;
 
-.toggle {
+.theme-toggle {
     @include flexBetween;
     position: relative;
     border: none;
@@ -18,17 +18,18 @@
             right: 0.3rem;
         }
 
-        &:hover .toggle__icon {
-            stroke: var(--base-yellow);
+        &:hover .theme-toggle__icon {
+            stroke: var(--toggle-base-yellow);
+            fill: var(--toggle-base-yellow);
         }
     }
 
     &__icon {
         width: 2.4rem;
         height: 2.4rem;
-        fill: var(--base-yellow);
-        stroke: var(--dark-yellow);
-        transition: var(--transition-fast);
+        stroke: var(--toggle-dark-yellow);
+        fill: var(--test-bg);
+        transition: var(--transition-svg);
         z-index: 10;
     }
 
@@ -38,8 +39,9 @@
         width: 6rem;
         height: 3rem;
         padding: 0.2rem;
-        background-color: var(--base-white);
+        background-color: var(--test-bg);
         border-radius: var(--border-radius);
+        transition: var(--transition-colors);
     }
 
     input[type="radio"] {
@@ -48,7 +50,7 @@
         height: 2.4rem;
         margin: 0.1rem;
 
-        &:focus ~ .toggle__button {
+        &:focus ~ .theme-toggle__button {
             scale: 0.925;
         }
     }
@@ -60,11 +62,11 @@
         height: 2.6rem;
         background-color: var(--base-blue);
         border-radius: 50%;
-        transition: var(--transition-fast);
+        transition: left var(--easing-color), scale var(--easing-color-fast);
         z-index: 20;
     }
 
-    #light:checked ~ .toggle__button {
+    #light:checked ~ .theme-toggle__button {
         left: calc(100% - 2.8rem);
     }
 }

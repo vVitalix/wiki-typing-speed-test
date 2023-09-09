@@ -4,7 +4,7 @@
     @include flexBetween;
     flex-direction: column;
     height: 16rem;
-    transition: var(--transition-fast);
+    transition: padding var(--easing-position);
     position: relative;
     @include paddingBreakpointsBody;
 

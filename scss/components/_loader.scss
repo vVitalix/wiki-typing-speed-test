@@ -4,7 +4,7 @@
     @include flexCenter;
     flex-grow: 1;
     align-self: stretch;
-    transition: var(--transition-fast);
+    transition: padding var(--easing-position);
     @include paddingBreakpointsTest;
 
     &__icon {

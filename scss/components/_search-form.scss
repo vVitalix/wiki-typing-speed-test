@@ -16,13 +16,8 @@
         color: var(--base-blue);
         @include border;
 
-        &:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        &:hover:disabled {
-            border-color: var(--base-white);
+        &::placeholder {
+            color: var(--accent-blue);
         }
     }
 
@@ -33,13 +28,7 @@
         width: 7.2rem;
         height: 4.2rem;
         @include border;
-
-        &:disabled {
-            background-color: transparent;
-            border-color: transparent;
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
+        background-color: transparent;
     }
 
     &__icon {
