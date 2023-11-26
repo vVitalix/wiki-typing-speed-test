@@ -16,6 +16,7 @@ const speedResult = document.querySelector("#speed-result");
 const accuracyResult = document.querySelector("#accuracy-result");
 const timer = document.querySelector("#timer");
 const timerIcon = document.querySelector(".stats__timer-icon");
+const timerIconColor = document.querySelector(".color-start");
 
 const endpoint = "https://en.wikipedia.org/w/api.php?";
 const params = {
@@ -33,23 +34,25 @@ const params = {
 let rawText;
 let index;
 let typos;
-let time;
-let interval;
+let timerLoop;
+let remainingTime;
+let secondsTestDuration = 60;
 
 const resetStats = () => {
     speed.textContent = "...";
     accuracy.textContent = "...%";
     speedResult.textContent = speed.textContent;
     accuracyResult.textContent = accuracy.textContent;
-    timer.textContent = 60;
+    timer.textContent = secondsTestDuration.toString().padStart(2, "0");
     timerIcon.style.strokeDashoffset = 0;
     index = 0;
     typos = 0;
-    time = 60;
-    interval = null;
+    timerLoop = null;
+    remainingTime = null;
+    timerIconColor.classList.remove("expire");
 };
 
-const clearPreviousResults = () => {
+const clearPreviousSearchResults = () => {
     searchInput.value = "";
     title.innerHTML = "";
     text.innerHTML = "";
@@ -72,12 +75,17 @@ const setLoaderState = isLoading => {
     textWrapper.style.display = isLoading ? "none" : "block";
 
     changeFormState(isLoading);
+    changeRestartButtonState(isLoading);
     handlePauseBanner();
 };
 
 const changeFormState = isDisabled => {
     searchInput.disabled = isDisabled;
     submitButton.disabled = isDisabled;
+};
+
+const changeRestartButtonState = isDisabled => {
+    restartButton.disabled = isDisabled;
 };
 
 const indicateTypingProgress = (e, chars, charState) => {
@@ -93,20 +101,14 @@ const indicateTypingProgress = (e, chars, charState) => {
 };
 
 const updateAccuracy = (numberOfTypedChars, charState) => {
-    if (charState === "typo") {
-        typos++;
-    } else if (charState === true) {
-        //Checking the state of the previous character if it's a typo when "Backspace" is pressed
-        typos--;
-    }
+    if (charState === "typo") typos++;
+    //Checking the state of the previous character if it's a typo when "Backspace" is pressed
+    if (charState === true) typos--;
 
-    accuracy.textContent = `${Math.floor(
-        100 - (typos / numberOfTypedChars) * 100
-    )}%`;
-
-    if (numberOfTypedChars === 0) {
-        accuracy.textContent = "...%";
-    }
+    accuracy.textContent =
+        numberOfTypedChars > 0
+            ? `${Math.floor(100 - 100 * (typos / numberOfTypedChars))}%`
+            : "...%";
 };
 
 const showTypo = (e, chars) => {
@@ -139,64 +141,108 @@ const moveTextByProgress = () => {
     handlePauseBanner();
 };
 
-const updateProgressBar = words => {
+const updateProgressBar = () => {
+    const words = text.querySelectorAll(".word");
     const currentWord = text.querySelector(".current-word");
     const indexOfCurrentWord = [].indexOf.call(words, currentWord);
 
     progressBar.style.width =
-        indexOfCurrentWord === -1
-            ? "100%"
-            : `${Math.floor((indexOfCurrentWord / words.length) * 100)}%`;
+        indexOfCurrentWord !== -1
+            ? `${Math.floor((indexOfCurrentWord / words.length) * 100)}%`
+            : "100%";
 };
 
-const calculateSpeed = words => {
+const calculateSpeed = () => {
+    const words = text.querySelectorAll(".word");
     const currentWord = text.querySelector(".current-word");
-    const indexCurrentWord = [].indexOf.call(words, currentWord);
+    const indexOfCurrentWord = [].indexOf.call(words, currentWord);
 
-    if (indexCurrentWord === -1) {
-        speed.textContent = Math.floor(60 / ((60 - time) / words.length));
-    } else {
-        speed.textContent = Math.floor(60 / ((60 - time) / indexCurrentWord));
+    const wordsTyped =
+        indexOfCurrentWord !== -1 ? indexOfCurrentWord : words.length;
+
+    // Calculating typing speed in wpm (words per minute), 1 min = 60000 ms
+    speed.textContent =
+        wordsTyped > 0
+            ? Math.floor(
+                  (60000 * wordsTyped) /
+                      (secondsTestDuration * 1000 - remainingTime)
+              )
+            : 0;
+};
+
+const limiter = (fn, wait) => {
+    let isCalled = false;
+
+    return function () {
+        if (!isCalled) {
+            fn();
+            isCalled = true;
+
+            setTimeout(() => {
+                isCalled = false;
+            }, wait);
+        }
+    };
+};
+
+const calculateSpeedLimited = limiter(calculateSpeed, 2250);
+
+const startTimer = () => {
+    if (index === 0 || timerLoop !== null) return;
+
+    changeFormState(true);
+    timerIcon.classList.remove("easing");
+
+    const setTime = secondsTestDuration * 1000;
+    const startTime = Date.now();
+    const futureTime = startTime + setTime;
+
+    timerLoop = setInterval(countDown);
+
+    function countDown() {
+        const currentTime = Date.now();
+        remainingTime = futureTime - currentTime;
+
+        if (remainingTime < 0) {
+            remainingTime = 0;
+            timer.textContent = "00";
+            timerIcon.style.strokeDashoffset = 245;
+
+            stopTimer();
+            return;
+        }
+
+        if (remainingTime <= 6000) {
+            timerIconColor.classList.add("expire");
+        }
+
+        const secondsLeft = Math.floor((remainingTime / 1000) % 60);
+        timer.textContent = secondsLeft.toString().padStart(2, "0");
+        timerIcon.style.strokeDashoffset =
+            245 - 245 * (remainingTime / setTime);
+
+        calculateSpeedLimited();
     }
 };
 
-const startTimer = (words, chars) => {
-    if (
-        (index === 0 && !chars[1].classList.contains("current-char")) ||
-        interval !== null
-    )
-        return;
-
-    changeFormState(true);
-
-    interval = setInterval(() => {
-        time--;
-        timer.textContent = time.toString().padStart(2, "0");
-        timerIcon.style.strokeDashoffset = 244 - (244 / 60) * time;
-        calculateSpeed(words);
-
-        if (time === 0) {
-            stopTimer();
-        }
-    }, 1000);
-};
-
 const stopTimer = () => {
+    textWrapper.blur();
     textWrapper.removeEventListener("keydown", handleTyping);
-    clearInterval(interval);
-    showTypingTestResults();
+    clearInterval(timerLoop);
+    handlePauseBanner();
+    calculateSpeed();
+    showTestResults();
 };
 
-const showTypingTestResults = () => {
-    textWrapper.blur();
-    handlePauseBanner();
+const showTestResults = () => {
     speedResult.textContent = speed.textContent;
     accuracyResult.textContent = accuracy.textContent;
     resultsModal.classList.add("show");
 };
 
 const restartTypingTest = () => {
-    clearInterval(interval);
+    clearInterval(timerLoop);
+    timerIcon.classList.add("easing");
     resetStats();
     changeFormState(false);
     resultsModal.classList.remove("show");
@@ -215,13 +261,12 @@ const restartTypingTest = () => {
     chars[index].classList.add("current-char");
 
     moveTextByProgress();
-    updateProgressBar(words);
+    updateProgressBar();
     textWrapper.addEventListener("keydown", handleTyping);
     textWrapper.focus();
 };
 
 const handleTyping = e => {
-    const words = text.querySelectorAll(".word");
     const chars = text.querySelectorAll(".char");
 
     if (
@@ -257,16 +302,16 @@ const handleTyping = e => {
         index--;
     }
 
-    startTimer(words, chars);
+    startTimer();
 
     if (index === chars.length) {
         chars[index - 1].parentElement.classList.remove("current-word");
-        calculateSpeed(words);
+
         stopTimer();
     }
 
     moveTextByProgress();
-    updateProgressBar(words);
+    updateProgressBar();
 };
 
 const handlePauseBanner = () => {
@@ -275,7 +320,7 @@ const handlePauseBanner = () => {
     if (
         !currentChar ||
         document.activeElement.className === "text-wrapper" ||
-        time === 0
+        remainingTime === 0
     ) {
         pauseBanner.style.display = "none";
         pauseBanner.classList.remove("bounce");
@@ -345,7 +390,7 @@ const formatTitle = title => {
     return titleString;
 };
 
-const showResults = results => {
+const showSearchResults = results => {
     results.forEach(result => {
         title.innerHTML = ` <a 
                                 target="_blank" 
@@ -376,7 +421,7 @@ const gatherData = pages => {
         title: page.title,
         text: page.extract,
     }));
-    showResults(results);
+    showSearchResults(results);
 };
 
 const getData = async () => {
@@ -384,7 +429,7 @@ const getData = async () => {
     if (isInputEmpty(userInput)) return;
 
     params.gsrsearch = userInput;
-    clearPreviousResults();
+    clearPreviousSearchResults();
     setLoaderState(true);
 
     try {

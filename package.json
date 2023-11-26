@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
         "compile:sass": "sass --watch scss:assets/css",
-        "prefix:css": "postcss assets/css/style.css --use autoprefixer -d build/"
+        "prefix:css": "postcss assets/css/style.css --use autoprefixer -d assets/css",
+        "minify:css": "postcss assets/css/style.css > assets/css/style.min.css"
     },
     "repository": {
         "type": "git",
@@ -18,11 +19,10 @@
     },
     "homepage": "https://github.com/vVitalix/typing-speed-test#readme",
     "devDependencies": {
+        "autoprefixer": "^10.4.15",
+        "cssnano": "^6.0.1",
+        "postcss": "^8.4.29",
+        "postcss-cli": "^10.1.0",
         "sass": "^1.62.1"
-    },
-    "dependencies": {
-        "autoprefixer": "^10.4.14",
-        "postcss": "^8.4.23",
-        "postcss-cli": "^10.1.0"
     }
 }

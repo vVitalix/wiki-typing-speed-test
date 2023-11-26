@@ -17,9 +17,9 @@
     --border-radius-char-current: 2px;
 
     --easing-slow: 0.7s ease;
-    --easing-base: 0.35s cubic-bezier(0.37, 0, 0.63, 1);
     --easing-color: 0.35s cubic-bezier(0.8, 0.3, 0.5, 1);
     --easing-color-fast: 0.17s cubic-bezier(0.8, 0.3, 0.5, 1);
+    --easing-color-slow: 2s cubic-bezier(0.8, 0.3, 0.5, 1);
     --easing-position: 0.2s cubic-bezier(0.65, 0.05, 0.35, 1);
     --transition-colors: color var(--easing-color),
         background-color var(--easing-color);
@@ -29,6 +29,7 @@
 
     //BASE COLORS
     --base-blue: #288cff;
+    --base-pink: #fd3c86;
     --banner-transparent-blue: rgba(40, 140, 255, 0.8);
     --toggle-base-yellow: #ffef0b;
     --toggle-dark-yellow: #ffd900;
@@ -40,7 +41,7 @@
     --light-fg-text: #707070;
     --light-current-word-border: #dddddd;
     --light-blue-accent: #8ac1ff;
-    --light-gray-blue-accent: #ddeeff;
+    --light-gray-blue-accent: #cee5ff;
     --light-gray-blue-shadow: #505f6e;
     --light-transparent-blue-overlay: rgba(0, 28, 58, 0.5);
     --light-green-bg-valid: #e8fbd5;

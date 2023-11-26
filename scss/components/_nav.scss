@@ -18,5 +18,14 @@
             var(--base-blue)
         );
         background-clip: text;
+
+        &:active {
+            color: transparent;
+            background-image: linear-gradient(
+                to right,
+                var(--base-blue),
+                var(--base-blue)
+            );
+        }
     }
 }

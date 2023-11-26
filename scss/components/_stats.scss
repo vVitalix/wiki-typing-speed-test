@@ -62,18 +62,25 @@
         top: 0;
         left: 0;
         stroke-dasharray: 244;
-        transition: stroke-dashoffset var(--easing-base);
         z-index: 10;
 
         .color-start {
             stop-color: var(--base-blue);
-            transition: var(--transition-svg);
+        }
+
+        .color-start.expire {
+            stop-color: var(--base-pink);
+            transition: stop-color var(--easing-color-slow);
         }
 
         .color-end {
             stop-color: var(--accent-blue);
             transition: var(--transition-svg);
         }
+    }
+
+    &__timer-icon.easing {
+        transition: stroke-dashoffset var(--easing-slow);
     }
 
     &__curve-icon {
